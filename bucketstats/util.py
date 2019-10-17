@@ -21,6 +21,18 @@ def safe_divide(numer: pd.Series, denom: pd.Series, fill) -> pd.Series:
     result[denom==0] = fill
     return result
 
+def _safe_get_item(x,idx=0):
+    """
+    >>> _safe_get_item(1)
+    1
+    >>> _safe_get_item((1,2))
+    1
+    """
+    if '__getitem__' in dir(x):
+        return x[idx]
+    else:
+        return x
+
 
 if __name__ == '__main__':
     import doctest
