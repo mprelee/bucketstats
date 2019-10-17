@@ -13,6 +13,14 @@ def rcumsum(x: pd.Series) -> pd.Series:
     :type : pandas.Series
     :returns:  pandas.Series -- reverse cumulative distribution
 
+    >>> x = pd.Series(range(5))
+    >>> rcumsum(x)
+    0    10
+    1    10
+    2     9
+    3     7
+    4     4
+    dtype: int64
     """
 
     return np.cumsum(x[::-1])[::-1]
@@ -33,7 +41,6 @@ def pmf(x: pd.Series) -> pd.Series:
     3    0.2
     4    0.2
     dtype: float64
-
     """
 
     return x/np.sum(x)
@@ -62,7 +69,6 @@ def cmf(x: pd.Series) -> pd.Series:
     2    0.692308
     3    1.000000
     dtype: float64
-
     """
 
     return np.cumsum(pmf(x))
