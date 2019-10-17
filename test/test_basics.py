@@ -1,4 +1,3 @@
-import unittest
 import doctest
 from bucketstats import basics
 
