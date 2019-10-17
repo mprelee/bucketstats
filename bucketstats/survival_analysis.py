@@ -6,8 +6,8 @@ __all__ = ['survival','kaplan_meier','var_kaplan_meier','nelson_aalen',
 
 import numpy as np
 import pandas as pd
-from bucketstats.basics import cmf, median, pmf, rcmf, rcumsum
-from bucketstats.util import safe_divide
+from basics import cmf, median, pmf, rcmf, rcumsum
+from util import safe_divide
 
 
 def survival(x: pd.Series) -> pd.Series:

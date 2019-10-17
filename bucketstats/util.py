@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-__all__ = ['safe_divide']
+__all__ = ['safe_divide','safe_getitem']
 
 def safe_divide(numer: pd.Series, denom: pd.Series, fill) -> pd.Series:
     """
@@ -21,11 +21,11 @@ def safe_divide(numer: pd.Series, denom: pd.Series, fill) -> pd.Series:
     result[denom==0] = fill
     return result
 
-def _safe_get_item(x,idx=0):
+def safe_getitem(x,idx=0):
     """
-    >>> _safe_get_item(1)
+    >>> safe_getitem(1)
     1
-    >>> _safe_get_item((1,2))
+    >>> safe_getitem((1,2))
     1
     """
     if '__getitem__' in dir(x):
