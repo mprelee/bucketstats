@@ -1,7 +1,8 @@
-# survival.py
+# survival_analysis.py
 # Matthew Prelee
 
-__all__ = ['survival','kaplan_meier',]
+__all__ = ['survival','kaplan_meier','var_kaplan_meier','nelson_aalen',
+        'var_nelson_aalen']
 
 import numpy as np
 import pandas as pd
