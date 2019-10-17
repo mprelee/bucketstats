@@ -1,6 +1,15 @@
 CHANGES
 =======
 
+v0.2
+----
+
+* Updates tests
+* Updates survival function estimators
+* Adds util.py, containing a safe\_divide function
+* Adds a test for rcumsum
+* Add survival.py
+
 v0.1.0
 ------
 
