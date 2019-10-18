@@ -127,8 +127,10 @@ def median(x: pd.Series) -> float:
 
     """
     tmp = 2 * np.cumsum(x) - sum(x)
-    idx_left = np.searchsorted(tmp, 0, side='left').tolist()[0]
-    idx_right = np.searchsorted(tmp, 0, side='right').tolist()[0]
+    _idx_left = np.searchsorted(tmp, 0, side='left').tolist()
+    _idx_right = np.searchsorted(tmp, 0, side='right').tolist()
+    idx_left = _idx_left if not isinstance(_idx_left, list) else _idx_left[0]
+    idx_right = _idx_right if not isinstance(_idx_right, list) else _idx_right[0]
     if idx_left == idx_right:
         return float(idx_left)
     else:
