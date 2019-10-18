@@ -1,12 +1,10 @@
 # distributions.py
 # Matthew Prelee
 
-__all__ = ['rcumsum', 'pmf', 'cmf', 'rcmf', 'median']
-
 import numpy as np
 import pandas as pd
-from util import safe_getitem
 
+from bucketstats.util import _safe_getitem
 
 def rcumsum(x: pd.Series) -> pd.Series:
     """Reverse cumulative sum of a data Series..
@@ -130,15 +128,10 @@ def median(x: pd.Series) -> float:
 
     """
     tmp = 2*np.cumsum(x) - sum(x)
-    idx_left  = safe_getitem(np.searchsorted(tmp, 0, side='left'),0)
-    idx_right = safe_getitem(np.searchsorted(tmp, 0, side='right'),0)
+    idx_left  = _safe_getitem(np.searchsorted(tmp, 0, side='left'),0)
+    idx_right = _safe_getitem(np.searchsorted(tmp, 0, side='right'),0)
     if idx_left == idx_right:
         return float(idx_left)
     else:
         return (idx_left + idx_right)/2
-
-
-if __name__ == '__main__':
-    import doctest
-    doctest.testmod()
 
