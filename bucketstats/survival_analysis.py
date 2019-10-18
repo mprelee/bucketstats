@@ -4,6 +4,7 @@
 import numpy as np
 import pandas as pd
 from bucketstats.probability import *
+from bucketstats.util import safe_divide
 
 
 def survival(x: pd.Series) -> pd.Series:
@@ -66,7 +67,7 @@ def kaplan_meier(x: pd.Series, x_obs: pd.Series=None) -> pd.Series:
 
     ni = _ni(x)
     di = _di(x, x_obs)
-    return np.cumprod(1-_safe_divide(di,ni,0))
+    return np.cumprod(1-safe_divide(di,ni,0))
 
 
 def var_kaplan_meier(x: pd.Series, x_obs: pd.Series=None) -> pd.Series:
@@ -93,7 +94,7 @@ def var_kaplan_meier(x: pd.Series, x_obs: pd.Series=None) -> pd.Series:
 
     ni, di = _ni(x), _di(x, x_obs)
     km_est = kaplan_meier(x,x_obs)
-    inner = _safe_divide(di, ni*(ni-di), 0)
+    inner = safe_divide(di, ni*(ni-di), 0)
     return km_est**2 * rcumsum(inner)
 
 
@@ -149,7 +150,7 @@ def var_nelson_aalen(x: pd.Series, x_obs: pd.Series=None) -> pd.Series:
 
     numer = var_kaplan_meier(x, x_obs)
     denom = kaplan_meier(x, x_obs)**2
-    return _safe_divide(numer, denom, 0) 
+    return safe_divide(numer, denom, 0) 
 
 
 if __name__ == '__main__':

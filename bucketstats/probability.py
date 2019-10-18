@@ -4,7 +4,7 @@
 import numpy as np
 import pandas as pd
 
-from bucketstats.util import _safe_getitem
+from bucketstats.util import safe_getitem
 
 def rcumsum(x: pd.Series) -> pd.Series:
     """Reverse cumulative sum of a data Series..
@@ -128,8 +128,8 @@ def median(x: pd.Series) -> float:
 
     """
     tmp = 2*np.cumsum(x) - sum(x)
-    idx_left  = _safe_getitem(np.searchsorted(tmp, 0, side='left'),0)
-    idx_right = _safe_getitem(np.searchsorted(tmp, 0, side='right'),0)
+    idx_left  = safe_getitem(np.searchsorted(tmp, 0, side='left'),0)
+    idx_right = safe_getitem(np.searchsorted(tmp, 0, side='right'),0)
     if idx_left == idx_right:
         return float(idx_left)
     else:
