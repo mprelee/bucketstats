@@ -1,6 +1,20 @@
 CHANGES
 =======
 
+v0.2.4
+------
+
+* Try to fix issue by checking if a list
+* Try to convert to list before extracting median values
+* Adds a file to gitignore
+* autopep8
+* Updates travis to use nosetests
+* More shuffling around.  Removed leading underscore so code could be shared
+* Restructures import structure
+* Fixes some import problems
+* Adds \_safe\_getattr
+* Adds travis ci
+
 v0.2.3
 ------
 

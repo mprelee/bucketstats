@@ -2,18 +2,11 @@ import numpy as np
 import pandas as pd
 
 
-#def safe_getitem(x, idx=0):
-#    """
-#    >>> safe_getitem(1)
-#    1
-#    >>> safe_getitem((1,2))
-#    1
-#    """
-#
-#    if '__getitem__' in dir(x):
-#        return x[idx]
-#    else:
-#        return x
+def assert_valid_hist(hist: pd.Series):
+    """Ensure histogram is numeric and sorted in increasing order."""
+    assert isinstance(hist, pd.Series), "Expected pd.Series; got {}".format(type(hist))
+    assert hist.index.is_numeric(), "Expected numeric Index; got {}".format(hist.index)
+    assert hist.index.is_monotonic_increasing, "Expected monotonic increasing Index; got {}".format(str(hist.index))
 
 
 def safe_divide(numer: pd.Series, denom: pd.Series, fill) -> pd.Series:
