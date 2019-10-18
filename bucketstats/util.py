@@ -2,18 +2,18 @@ import numpy as np
 import pandas as pd
 
 
-def safe_getitem(x, idx=0):
-    """
-    >>> safe_getitem(1)
-    1
-    >>> safe_getitem((1,2))
-    1
-    """
-
-    if '__getitem__' in dir(x):
-        return x[idx]
-    else:
-        return x
+#def safe_getitem(x, idx=0):
+#    """
+#    >>> safe_getitem(1)
+#    1
+#    >>> safe_getitem((1,2))
+#    1
+#    """
+#
+#    if '__getitem__' in dir(x):
+#        return x[idx]
+#    else:
+#        return x
 
 
 def safe_divide(numer: pd.Series, denom: pd.Series, fill) -> pd.Series:
