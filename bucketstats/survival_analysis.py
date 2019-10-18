@@ -43,7 +43,7 @@ def _di(x: pd.Series, x_obs: pd.Series) -> pd.Series:
     return x_obs if x_obs is not None else x
 
 
-def kaplan_meier(x: pd.Series, x_obs: pd.Series=None) -> pd.Series:
+def kaplan_meier(x: pd.Series, x_obs: pd.Series = None) -> pd.Series:
     """
     Kaplan-Meier estimate of survival function.
     https://en.wikipedia.org/wiki/Kaplan–Meier_estimator
@@ -67,10 +67,10 @@ def kaplan_meier(x: pd.Series, x_obs: pd.Series=None) -> pd.Series:
 
     ni = _ni(x)
     di = _di(x, x_obs)
-    return np.cumprod(1-safe_divide(di,ni,0))
+    return np.cumprod(1 - safe_divide(di, ni, 0))
 
 
-def var_kaplan_meier(x: pd.Series, x_obs: pd.Series=None) -> pd.Series:
+def var_kaplan_meier(x: pd.Series, x_obs: pd.Series = None) -> pd.Series:
     """
     Kaplan-Meier estimate of survival function.
     https://en.wikipedia.org/wiki/Kaplan–Meier_estimator
@@ -93,12 +93,12 @@ def var_kaplan_meier(x: pd.Series, x_obs: pd.Series=None) -> pd.Series:
     """
 
     ni, di = _ni(x), _di(x, x_obs)
-    km_est = kaplan_meier(x,x_obs)
-    inner = safe_divide(di, ni*(ni-di), 0)
+    km_est = kaplan_meier(x, x_obs)
+    inner = safe_divide(di, ni * (ni - di), 0)
     return km_est**2 * rcumsum(inner)
 
 
-def nelson_aalen(x: pd.Series, x_obs: pd.Series=None) -> pd.Series:
+def nelson_aalen(x: pd.Series, x_obs: pd.Series = None) -> pd.Series:
     """
     Nelson-Aalen estimate of cumulative hazard rate.
     https://en.wikipedia.org/wiki/Nelson–Aalen_estimator
@@ -123,10 +123,10 @@ def nelson_aalen(x: pd.Series, x_obs: pd.Series=None) -> pd.Series:
 
     ni = _ni(x)
     di = _di(x, x_obs)
-    return rcumsum(di/ni)
+    return rcumsum(di / ni)
 
 
-def var_nelson_aalen(x: pd.Series, x_obs: pd.Series=None) -> pd.Series:
+def var_nelson_aalen(x: pd.Series, x_obs: pd.Series = None) -> pd.Series:
     """
     Variance of Nelson-Aalen estimate of cumulative hazard rate.
     https://www.statsdirect.com/help/survival_analysis/kaplan.htm
@@ -150,10 +150,9 @@ def var_nelson_aalen(x: pd.Series, x_obs: pd.Series=None) -> pd.Series:
 
     numer = var_kaplan_meier(x, x_obs)
     denom = kaplan_meier(x, x_obs)**2
-    return safe_divide(numer, denom, 0) 
+    return safe_divide(numer, denom, 0)
 
 
 if __name__ == '__main__':
     import doctest
     doctest.testmod()
-
