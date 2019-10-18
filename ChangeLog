@@ -1,6 +1,9 @@
 CHANGES
 =======
 
+* Removes \_\_init\_\_,py.  Fixes package structure
+* Adds DiscreteDistribution class and some checking of valid histograms
+
 v0.2.4
 ------
 
