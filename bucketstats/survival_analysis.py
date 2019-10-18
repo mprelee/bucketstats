@@ -3,8 +3,8 @@
 
 import numpy as np
 import pandas as pd
-from bucketstats.probability import *
-from bucketstats.util import safe_divide
+from probability import *
+from util import safe_divide
 
 
 def survival(x: pd.Series) -> pd.Series:

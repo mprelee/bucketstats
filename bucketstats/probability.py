@@ -4,7 +4,7 @@
 import numpy as np
 import pandas as pd
 
-from bucketstats.util import assert_valid_hist
+from util import assert_valid_hist
 
 def rcumsum(hist: pd.Series) -> pd.Series:
     """Reverse cumulative sum of a data Series..
