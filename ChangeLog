@@ -1,6 +1,13 @@
 CHANGES
 =======
 
+* Removes extra python versions; only 3.6
+
+v0.3.3
+------
+
+* Removes duplicate py37 from travis yml
+
 v0.3.2
 ------
 
