@@ -1,6 +1,8 @@
 CHANGES
 =======
 
+* Adds \_\_init\_\_.py and updates testing command in travis
+
 v0.3
 ----
 
