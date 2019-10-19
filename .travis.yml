@@ -8,4 +8,4 @@ python:
 install:
   - pip install -r requirements.txt
 script:
-  - nosetests --with-doctest -v bucketstats
+  - nosetests --with-doctest -v 

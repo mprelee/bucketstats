@@ -1,6 +1,11 @@
 CHANGES
 =======
 
+v0.3
+----
+
+* Adds build badge to readme
+* Updates changelog
 * Adds verbose testing
 * Removed cached\_property as it was blocking nosestests.  Fixes std dev and variance
 * autopep8
