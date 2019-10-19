@@ -7,6 +7,7 @@ from typing import List
 # TODO: Replace with functools.cached_property for py3.8
 from cached_property import cached_property
 
+
 def _assert_valid_hist(hist: pd.Series):
     """Ensure histogram is numeric and sorted in increasing order.
 
@@ -27,11 +28,14 @@ def _assert_valid_hist(hist: pd.Series):
     Traceback (most recent call last):
     ...
     AssertionError: Expected monotonic increasing Index; got Int64Index([4, 6, 5], dtype='int64')
-    
+
     """
-    assert isinstance(hist, pd.Series), "Expected pd.Series; got {}".format(type(hist))
+    assert isinstance(
+        hist, pd.Series), "Expected pd.Series; got {}".format(
+        type(hist))
     assert hist.index.is_numeric(), "Expected numeric Index; got {}".format(hist.index)
-    assert hist.index.is_monotonic_increasing, "Expected monotonic increasing Index; got {}".format(str(hist.index))
+    assert hist.index.is_monotonic_increasing, "Expected monotonic increasing Index; got {}".format(
+        str(hist.index))
 
 
 def _safe_divide(numer: pd.Series, denom: pd.Series, fill) -> pd.Series:
@@ -64,7 +68,7 @@ class DiscreteDistribution:
     def __init__(self, hist):
         """Constructor for  DiscreteDistribution object.
         The provided histogram must be a pandas Series
-        whose Index must be numeric and monotonically increasing 
+        whose Index must be numeric and monotonically increasing
         (and therefore, sorted)
 
         >>> hist = pd.Series(range(5))
@@ -89,7 +93,7 @@ class DiscreteDistribution:
         return self._hist
 
     @cached_property
-    def index(self) -> pd.Index: 
+    def index(self) -> pd.Index:
         """Support of underlying histogram, as a pandas Index.
 
         >>> hist = pd.Series(range(5))
@@ -101,7 +105,7 @@ class DiscreteDistribution:
         return self._hist.index
 
     @cached_property
-    def values(self): 
+    def values(self):
         """Values of underlying histogram, which are the counts
         of each histogram "bucket" of the index
         >>> hist = pd.Series(range(5))
@@ -152,11 +156,11 @@ class DiscreteDistribution:
         4     4
         dtype: int64
         """
- 
+
         return np.cumsum(self._hist[::-1])[::-1]
 
     @cached_property
-    def cmf(self) -> pd.Series: 
+    def cmf(self) -> pd.Series:
         """Cumulative mass function.
 
         >>> hist = pd.Series(data=[1,1,1,1,1], index=range(5))
@@ -181,7 +185,7 @@ class DiscreteDistribution:
         return self.cumsum / self.sum
 
     @cached_property
-    def rcmf(self) -> pd.Series: 
+    def rcmf(self) -> pd.Series:
         """Reverse cumulative mass function.
 
         >>> hist = pd.Series(data=[1,1,1,1,1], index=range(5))
@@ -207,7 +211,7 @@ class DiscreteDistribution:
         return self.rcumsum / self.sum
 
     @cached_property
-    def pmf(self) -> pd.Series: 
+    def pmf(self) -> pd.Series:
         """Probability mass function.
 
         >>> hist = pd.Series(data=[1,1,1,1,1], index=range(5))
@@ -223,7 +227,7 @@ class DiscreteDistribution:
         return self._hist / self.sum
 
     @cached_property
-    def mean(self): 
+    def mean(self):
         """Expected value of distribution
         >>> hist = pd.Series(range(5))
         >>> d = DiscreteDistribution(hist)
@@ -233,7 +237,7 @@ class DiscreteDistribution:
         return np.inner(self.index, self.pmf)
 
     @cached_property
-    def median(self) -> float: 
+    def median(self) -> float:
         """Median of underlying distribution
 
         >>> hist = pd.Series([1,1,1], index=range(3))
@@ -260,8 +264,10 @@ class DiscreteDistribution:
         tmp = 2 * self.cumsum - self.sum
         _idx_left = np.searchsorted(tmp, 0, side='left').tolist()
         _idx_right = np.searchsorted(tmp, 0, side='right').tolist()
-        idx_left = _idx_left if not isinstance(_idx_left, list) else _idx_left[0]
-        idx_right = _idx_right if not isinstance(_idx_right, list) else _idx_right[0]
+        idx_left = _idx_left if not isinstance(
+            _idx_left, list) else _idx_left[0]
+        idx_right = _idx_right if not isinstance(
+            _idx_right, list) else _idx_right[0]
         if idx_left == idx_right:
             return float(idx_left)
         else:
@@ -301,7 +307,8 @@ class DiscreteDistribution:
         ...
         AssertionError: Distribution is multimodal with modes [1, 3]
         """
-        assert(len(self.modes)==1), "Distribution is multimodal with modes {}".format(self.modes)
+        assert(len(self.modes) == 1), "Distribution is multimodal with modes {}".format(
+            self.modes)
         return self.modes[0]
 
     @cached_property
@@ -332,7 +339,7 @@ class DiscreteDistribution:
         >>> d.entropy
         1.0
         """
-        return np.sum(-self.pmf * np.log2(self.pmf) )
+        return np.sum(-self.pmf * np.log2(self.pmf))
 
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     # Survival Analysis
@@ -342,4 +349,3 @@ class DiscreteDistribution:
 if __name__ == '__main__':
     import doctest
     doctest.testmod()
-
