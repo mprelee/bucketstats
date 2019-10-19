@@ -1,6 +1,11 @@
 CHANGES
 =======
 
+v0.3.2
+------
+
+* Update changelog and add skip\_cleanup to True
+
 v0.3.1
 ------
 
