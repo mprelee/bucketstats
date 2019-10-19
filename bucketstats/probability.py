@@ -142,3 +142,8 @@ def median(hist: pd.Series) -> float:
         return float(idx_left)
     else:
         return (idx_left + idx_right) / 2
+
+
+def mean(hist: pd.Series) -> float:
+    pass
+    #return np.dot(hist.index, pmf(hist))

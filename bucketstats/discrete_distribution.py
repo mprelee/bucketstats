@@ -1,28 +1,63 @@
 # discrete_distribution.py
 
 import pandas as pd
-from util import assert_valid_hist
-import probability as p
+
+def _assert_valid_hist(hist: pd.Series):
+    """Ensure histogram is numeric and sorted in increasing order."""
+    assert isinstance(hist, pd.Series), "Expected pd.Series; got {}".format(type(hist))
+    assert hist.index.is_numeric(), "Expected numeric Index; got {}".format(hist.index)
+    assert hist.index.is_monotonic_increasing, "Expected monotonic increasing Index; got {}".format(str(hist.index))
+
+def _safe_divide(numer: pd.Series, denom: pd.Series, fill) -> pd.Series:
+    """
+    Safely divide two series by replacing zero denom with specified fill value
+
+    >>> numer = pd.Series([1,1,1])
+    >>> denom = pd.Series([0,1,2])
+    >>> fill = 0
+    >>> safe_divide(numer, denom, fill)
+    0    0.0
+    1    1.0
+    2    0.5
+    dtype: float64
+    """
+
+    result = numer / denom
+    result[denom == 0] = fill
+    return result
 
 
-class DiscreteDistribution(pd.Series):
+class DiscreteDistribution:
 
-    def __init__(self, *args, **kwargs):
-        super(DiscreteDistribution, self).__init__(*args, **kwargs)
-        assert_valid_hist(self)
+    def __init__(self, hist):
+        _assert_valid_hist(hist)
+        self._hist = hist
 
     @property
-    def cmf(self): return p.cmf(self)
+    def index(self): return self._hist.index
 
     @property
-    def median(self): return p.median(self)
+    def values(self): return self._hist.values
 
     @property
-    def pmf(self): return p.pmf(self)
+    def cmf(self): 
+        pass
 
     @property
-    def rcmf(self): return p.rcmf(self)
+    def median(self): 
+        pass
 
+    @property
+    def mean(self): 
+        pass
+
+    @property
+    def pmf(self): 
+        pass
+
+    @property
+    def rcmf(self): 
+        pass
 
 
 if __name__ == '__main__':
