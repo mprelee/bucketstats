@@ -1,6 +1,12 @@
 CHANGES
 =======
 
+v0.3.1
+------
+
+* fix indentation
+* Update changelog
+* Adds api token for pypi
 * Adds \_\_init\_\_.py and updates testing command in travis
 
 v0.3
