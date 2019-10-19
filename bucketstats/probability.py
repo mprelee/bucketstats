@@ -4,14 +4,8 @@
 import numpy as np
 import pandas as pd
 
-from util import assert_valid_hist
-
 def rcumsum(hist: pd.Series) -> pd.Series:
     """Reverse cumulative sum of a data Series..
-
-    :param hist: binned histogram.
-    :type : pandas.Series
-    :returns:  pandas.Series -- reverse cumulative distribution
 
     >>> hist = pd.Series(range(5))
     >>> rcumsum(hist)
@@ -22,31 +16,11 @@ def rcumsum(hist: pd.Series) -> pd.Series:
     4     4
     dtype: int64
     """
-
-    assert_valid_hist(hist)
-    return np.cumsum(hist[::-1])[::-1]
+    pass
 
 
 def pmf(hist: pd.Series) -> pd.Series:
-    """Probability mass function.
-
-    :param hist: binned histogram.
-    :type : pandas.Series
-    :returns:  pandas.Series -- hist normalized by sum(hist)
-
-    >>> hist = pd.Series(data=[1,1,1,1,1], index=range(5))
-    >>> pmf(hist)
-    0    0.2
-    1    0.2
-    2    0.2
-    3    0.2
-    4    0.2
-    dtype: float64
-    """
-
-    assert_valid_hist(hist)
-    return hist / np.sum(hist)
-
+    pass
 
 def cmf(hist: pd.Series) -> pd.Series:
     """Cumulative mass function.
@@ -72,9 +46,7 @@ def cmf(hist: pd.Series) -> pd.Series:
     3    1.000000
     dtype: float64
     """
-
-    assert_valid_hist(hist)
-    return np.cumsum(pmf(hist))
+    pass
 
 
 def rcmf(hist: pd.Series) -> pd.Series:
@@ -102,9 +74,7 @@ def rcmf(hist: pd.Series) -> pd.Series:
     dtype: float64
 
     """
-
-    assert_valid_hist(hist)
-    return rcumsum(pmf(hist))
+    pass
 
 
 def median(hist: pd.Series) -> float:
@@ -131,19 +101,8 @@ def median(hist: pd.Series) -> float:
     1.5
 
     """
-
-    assert_valid_hist(hist)
-    tmp = 2 * np.cumsum(hist) - sum(hist)
-    _idx_left = np.searchsorted(tmp, 0, side='left').tolist()
-    _idx_right = np.searchsorted(tmp, 0, side='right').tolist()
-    idx_left = _idx_left if not isinstance(_idx_left, list) else _idx_left[0]
-    idx_right = _idx_right if not isinstance(_idx_right, list) else _idx_right[0]
-    if idx_left == idx_right:
-        return float(idx_left)
-    else:
-        return (idx_left + idx_right) / 2
+    pass
 
 
 def mean(hist: pd.Series) -> float:
     pass
-    #return np.dot(hist.index, pmf(hist))

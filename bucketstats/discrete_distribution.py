@@ -2,7 +2,10 @@
 
 import pandas as pd
 import numpy as np
+from typing import List
 
+# TODO: Replace with functools.cached_property for py3.8
+from cached_property import cached_property
 
 def _assert_valid_hist(hist: pd.Series):
     """Ensure histogram is numeric and sorted in increasing order.
@@ -51,6 +54,12 @@ def _safe_divide(numer: pd.Series, denom: pd.Series, fill) -> pd.Series:
 
 
 class DiscreteDistribution:
+    """A class for enabling probabily analysis on finite discrete distributions
+    resulting from a histogram.  Histograms are easily generated in libraries
+    like numpy and pandas, or by running a simple SQL query against a
+    database.  This class transforms the histogram into various classic
+    probability distributions and other properties.
+    """
 
     def __init__(self, hist):
         """Constructor for  DiscreteDistribution object.
@@ -79,7 +88,7 @@ class DiscreteDistribution:
         """
         return self._hist
 
-    @property
+    @cached_property
     def index(self) -> pd.Index: 
         """Support of underlying histogram, as a pandas Index.
 
@@ -91,7 +100,7 @@ class DiscreteDistribution:
 
         return self._hist.index
 
-    @property
+    @cached_property
     def values(self): 
         """Values of underlying histogram, which are the counts
         of each histogram "bucket" of the index
@@ -103,7 +112,12 @@ class DiscreteDistribution:
 
         return self._hist.values
 
-    @property
+    @cached_property
+    def support(self):
+        """ Nonzero support of underlying distribution """
+        return self.index[self.values > 0]
+
+    @cached_property
     def sum(self):
         """Sum of underlying histogram values
 
@@ -115,7 +129,7 @@ class DiscreteDistribution:
 
         return self._hist.sum()
 
-    @property
+    @cached_property
     def cumsum(self) -> pd.Series:
         """Cumulative sum of the underlying histogram.
         >>> hist = pd.Series(range(5))
@@ -125,7 +139,7 @@ class DiscreteDistribution:
         """
         return np.cumsum(self._hist)
 
-    @property
+    @cached_property
     def rcumsum(self) -> pd.Series:
         """Reverse cumulative sum of the underlying histogram.
         >>> hist = pd.Series(range(5))
@@ -141,7 +155,7 @@ class DiscreteDistribution:
  
         return np.cumsum(self._hist[::-1])[::-1]
 
-    @property
+    @cached_property
     def cmf(self) -> pd.Series: 
         """Cumulative mass function.
 
@@ -166,7 +180,7 @@ class DiscreteDistribution:
         """
         return self.cumsum / self.sum
 
-    @property
+    @cached_property
     def rcmf(self) -> pd.Series: 
         """Reverse cumulative mass function.
 
@@ -192,7 +206,7 @@ class DiscreteDistribution:
 
         return self.rcumsum / self.sum
 
-    @property
+    @cached_property
     def pmf(self) -> pd.Series: 
         """Probability mass function.
 
@@ -208,7 +222,7 @@ class DiscreteDistribution:
         """
         return self._hist / self.sum
 
-    @property
+    @cached_property
     def mean(self): 
         """Expected value of distribution
         >>> hist = pd.Series(range(5))
@@ -218,7 +232,7 @@ class DiscreteDistribution:
         """
         return np.inner(self.index, self.pmf)
 
-    @property
+    @cached_property
     def median(self) -> float: 
         """Median of underlying distribution
 
@@ -252,6 +266,78 @@ class DiscreteDistribution:
             return float(idx_left)
         else:
             return (idx_left + idx_right) / 2
+
+    @cached_property
+    def modes(self) -> List:
+        """Modes of underlying distribution as a list
+
+        >>> hist = pd.Series([1,1,1,4], index=range(4))
+        >>> d = DiscreteDistribution(hist)
+        >>> d.modes
+        [3]
+
+        >>> hist = pd.Series([3,4,3,4], index=range(4))
+        >>> d = DiscreteDistribution(hist)
+        >>> d.modes
+        [1, 3]
+        """
+        highest_frequency = max(self.values)
+        return self.index[self.values == highest_frequency].tolist()
+
+    @cached_property
+    def mode(self):
+        """Mode of underlying unimodal distribution.  Throws an
+        exception if distribution is multimodal.
+
+        >>> hist = pd.Series([1,1,1,4], index=range(4))
+        >>> d = DiscreteDistribution(hist)
+        >>> d.mode
+        3
+
+        >>> hist = pd.Series([3,4,3,4], index=range(4))
+        >>> d = DiscreteDistribution(hist)
+        >>> d.mode
+        Traceback (most recent call last):
+        ...
+        AssertionError: Distribution is multimodal with modes [1, 3]
+        """
+        assert(len(self.modes)==1), "Distribution is multimodal with modes {}".format(self.modes)
+        return self.modes[0]
+
+    @cached_property
+    def variance(self):
+        """Variance of distribution
+        >>> hist = pd.Series(data=[10,10], index=[0,1])
+        >>> d = DiscreteDistribution(hist)
+        >>> d.variance
+        0.25
+        """
+        return np.inner(self.pmf, np.pow(np.index, 2)) - self.mean**2
+
+    @cached_property
+    def std_dev(self):
+        """Variance of distribution
+        >>> hist = pd.Series(data=[10,10], index=[0,1])
+        >>> d = DiscreteDistribution(hist)
+        >>> d.variance
+        0.0625
+        """
+        return np.sqrt(self.variance)
+
+    @cached_property
+    def entropy(self) -> float:
+        """Shannon entropy of this distribution
+        >>> hist = pd.Series(data=[10,10], index=[0,1])
+        >>> d = DiscreteDistribution(hist)
+        >>> d.entropy
+        1.0
+        """
+        return np.sum(-self.pmf * np.log2(self.pmf) )
+
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # Survival Analysis
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 
 if __name__ == '__main__':
     import doctest
