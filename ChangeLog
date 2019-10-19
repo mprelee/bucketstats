@@ -1,6 +1,56 @@
 CHANGES
 =======
 
+* Adds verbose testing
+* Removed cached\_property as it was blocking nosestests.  Fixes std dev and variance
+* autopep8
+* Comments out code for now
+* Adds variance, std dev, entropy, mode, modes, and other basic stats.  Changes @property to @cached\_property for slight speedups
+* Rewrites discrete distribution propertly with tests and comments
+* Removes util.py for now
+* Start refactoring to move everything into discrete\_distribution.py
+* Changes test call
+* Removes \_\_init\_\_,py.  Fixes package structure
+* Adds DiscreteDistribution class and some checking of valid histograms
+
+v0.2.4
+------
+
+* Try to fix issue by checking if a list
+* Try to convert to list before extracting median values
+* Adds a file to gitignore
+* autopep8
+* Updates travis to use nosetests
+* More shuffling around.  Removed leading underscore so code could be shared
+* Restructures import structure
+* Fixes some import problems
+* Adds \_safe\_getattr
+* Adds travis ci
+
+v0.2.3
+------
+
+* Try and fix setup.cfg again
+
+v0.2.2
+------
+
+* changelog
+
+v0.2.1
+------
+
+* Fixes setup.cfg
+
+v0.2
+----
+
+* Updates tests
+* Updates survival function estimators
+* Adds util.py, containing a safe\_divide function
+* Adds a test for rcumsum
+* Add survival.py
+
 v0.1.0
 ------
 
