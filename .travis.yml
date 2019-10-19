@@ -1,11 +1,19 @@
 language: python
 python:
-  - "3.5"
-  - "3.6" # current default Python on Travis CI
-  - "3.7"
-  - "3.7"  
-  - "3.8"  
+- '3.5'
+- '3.6'
+- '3.7'
+- '3.7'
+- '3.8'
 install:
-  - pip install -r requirements.txt
+- pip install -r requirements.txt
 script:
-  - nosetests --with-doctest -v 
+- nosetests --with-doctest -v
+deploy:
+  provider: pypi
+  user: __token__
+  password:
+    secure: osTGUCfG6GKsAYr02KXPPdworCXOKFxTDE/MB+pY/DsmOFPtyehPXYzfwLdm34slkV3Pa9Q4BnHQDDAes9osYzDUP69NFViB9/8aDU6vIhOC4UQlNLPbJrk7zpIZU/Wd1LRBwC4Wu6TFQVdYYyMOUlhU5sNIVRrYuy8yn/9QKOe8Emq4AsbrLAdwm3uYYSYzjgIR8s1KqS/6vGh219VrtlLEXC6YxwXct8EpWhhgfRTCIHC0n92+GjogUD3mDpjkmSapiozBWC2s1YmGYGnixJmWTZrDRK9EuGP4NcQDCFfROchcscYE7FW0rN9NgHQUQwGMI+ROhRusLYhy+e4x1vCwP0bEExji1Fx9K6Kk0a8ZgMjXIy7vRE2j3gk84VL2k5s4Dx1ldNXD1IWUhqcH+BLFaLyYEfm+pN5jB/BQDlF9XZ9V3SkWnpT8n3LR0MKVA27CTwnkvBOBGgRfrcRCmZO8ap45JFd7d7uFDNtyAm28o6aryGYcyPjKYCL3+4aBUHM6scXOrOaueJFXmugt6nxm57CX6pQJ5JKyLtSWn1cN2XgcIK7MT3zaSLbl6swAhezxlCAymajG7I4KsYPaZ5hggDKIZI/U4BPEdR+ihBkUFLxsrYW/wHjdBpwqm9Si5mqZE2BJE4fqAw6nzsmBQ6eHhmGvh5xXQNnpBOF83zM=
+  on:
+    tags: true
+   distributions: "sdist bdist_wheel" 
