@@ -4,8 +4,8 @@ import pandas as pd
 import numpy as np
 from typing import List
 
-# TODO: Replace with functools.cached_property for py3.8
-from cached_property import cached_property
+# TODO: Replace with functools.property for py3.8
+#from property import property
 
 
 def _assert_valid_hist(hist: pd.Series):
@@ -92,7 +92,7 @@ class DiscreteDistribution:
         """
         return self._hist
 
-    @cached_property
+    @property
     def index(self) -> pd.Index:
         """Support of underlying histogram, as a pandas Index.
 
@@ -104,7 +104,7 @@ class DiscreteDistribution:
 
         return self._hist.index
 
-    @cached_property
+    @property
     def values(self):
         """Values of underlying histogram, which are the counts
         of each histogram "bucket" of the index
@@ -116,12 +116,12 @@ class DiscreteDistribution:
 
         return self._hist.values
 
-    @cached_property
+    @property
     def support(self):
         """ Nonzero support of underlying distribution """
         return self.index[self.values > 0]
 
-    @cached_property
+    @property
     def sum(self):
         """Sum of underlying histogram values
 
@@ -133,7 +133,7 @@ class DiscreteDistribution:
 
         return self._hist.sum()
 
-    @cached_property
+    @property
     def cumsum(self) -> pd.Series:
         """Cumulative sum of the underlying histogram.
         >>> hist = pd.Series(range(5))
@@ -143,7 +143,7 @@ class DiscreteDistribution:
         """
         return np.cumsum(self._hist)
 
-    @cached_property
+    @property
     def rcumsum(self) -> pd.Series:
         """Reverse cumulative sum of the underlying histogram.
         >>> hist = pd.Series(range(5))
@@ -159,7 +159,7 @@ class DiscreteDistribution:
 
         return np.cumsum(self._hist[::-1])[::-1]
 
-    @cached_property
+    @property
     def cmf(self) -> pd.Series:
         """Cumulative mass function.
 
@@ -184,7 +184,7 @@ class DiscreteDistribution:
         """
         return self.cumsum / self.sum
 
-    @cached_property
+    @property
     def rcmf(self) -> pd.Series:
         """Reverse cumulative mass function.
 
@@ -210,7 +210,7 @@ class DiscreteDistribution:
 
         return self.rcumsum / self.sum
 
-    @cached_property
+    @property
     def pmf(self) -> pd.Series:
         """Probability mass function.
 
@@ -226,7 +226,7 @@ class DiscreteDistribution:
         """
         return self._hist / self.sum
 
-    @cached_property
+    @property
     def mean(self):
         """Expected value of distribution
         >>> hist = pd.Series(range(5))
@@ -236,7 +236,7 @@ class DiscreteDistribution:
         """
         return np.inner(self.index, self.pmf)
 
-    @cached_property
+    @property
     def median(self) -> float:
         """Median of underlying distribution
 
@@ -273,7 +273,7 @@ class DiscreteDistribution:
         else:
             return (idx_left + idx_right) / 2
 
-    @cached_property
+    @property
     def modes(self) -> List:
         """Modes of underlying distribution as a list
 
@@ -290,7 +290,7 @@ class DiscreteDistribution:
         highest_frequency = max(self.values)
         return self.index[self.values == highest_frequency].tolist()
 
-    @cached_property
+    @property
     def mode(self):
         """Mode of underlying unimodal distribution.  Throws an
         exception if distribution is multimodal.
@@ -311,7 +311,7 @@ class DiscreteDistribution:
             self.modes)
         return self.modes[0]
 
-    @cached_property
+    @property
     def variance(self):
         """Variance of distribution
         >>> hist = pd.Series(data=[10,10], index=[0,1])
@@ -319,19 +319,19 @@ class DiscreteDistribution:
         >>> d.variance
         0.25
         """
-        return np.inner(self.pmf, np.pow(np.index, 2)) - self.mean**2
+        return np.inner(self.pmf, np.power(self.index, 2)) - self.mean**2
 
-    @cached_property
+    @property
     def std_dev(self):
-        """Variance of distribution
+        """Standard deviation of distribution
         >>> hist = pd.Series(data=[10,10], index=[0,1])
         >>> d = DiscreteDistribution(hist)
-        >>> d.variance
-        0.0625
+        >>> d.std_dev
+        0.5
         """
         return np.sqrt(self.variance)
 
-    @cached_property
+    @property
     def entropy(self) -> float:
         """Shannon entropy of this distribution
         >>> hist = pd.Series(data=[10,10], index=[0,1])
